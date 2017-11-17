@@ -23,12 +23,6 @@ def index(request):
     # Get connection
     conn = _get_conn(**request.session['conn_credentials'])
 
-    # Get balance
-    balance = conn.getbalance()
-
-    # Get address
-    address = conn.getaccountaddress('')
-
     # Handle sending
     if request.method == 'POST':
         sending_form = SendingForm(request.POST)
@@ -47,6 +41,12 @@ def index(request):
                 return redirect('wallet:index')
     else:
         sending_form = SendingForm()
+
+    # Get balance
+    balance = conn.getbalance()
+
+    # Get address
+    address = conn.getaccountaddress('')
 
     # Get transactions
     transactions = conn.listtransactions()[::-1]
