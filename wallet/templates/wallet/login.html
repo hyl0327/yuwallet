@@ -1,0 +1,33 @@
+{% extends 'wallet/base.html' %}
+
+{% load static %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<h1>YuWallet</h1>
+<form method="post" action="{% url 'wallet:login' %}">
+  {% csrf_token %}
+
+  {{ conn_credentials_form.non_field_errors }}
+
+  <label for="{{ conn_credentials_form.rpcuser.id_for_label }}">{{ conn_credentials_form.rpcuser.label }}</label>
+  {{ conn_credentials_form.rpcuser }}
+  {{ conn_credentials_form.rpcuser.errors }}
+
+  <label for="{{ conn_credentials_form.rpcpassword.id_for_label }}">{{ conn_credentials_form.rpcpassword.label }}</label>
+  {{ conn_credentials_form.rpcpassword }}
+  {{ conn_credentials_form.rpcpassword.errors }}
+
+  <label for="{{ conn_credentials_form.rpcconnect.id_for_label }}">{{ conn_credentials_form.rpcconnect.label }}</label>
+  {{ conn_credentials_form.rpcconnect }}
+  {{ conn_credentials_form.rpcconnect.errors }}
+
+  <label for="{{ conn_credentials_form.rpcport.id_for_label }}">{{ conn_credentials_form.rpcport.label }}</label>
+  {{ conn_credentials_form.rpcport }}
+  {{ conn_credentials_form.rpcport.errors }}
+
+  <button type="submit">Login</button>
+</form>
+{% endblock %}

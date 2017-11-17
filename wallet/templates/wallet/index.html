@@ -1,0 +1,58 @@
+{% extends 'wallet/base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<h2>Balance</h2>
+<p>{{ balance|stringformat:'.8f'|intcomma }} BTC</p>
+
+<h2>Receiving</h2>
+<p>{{ address }}</p>
+
+<h2>Sending</h2>
+<form method="post" action="{% url 'wallet:index' %}">
+  {% csrf_token %}
+
+  {{ sending_form.non_field_errors }}
+
+  <label for="{{ sending_form.address.id_for_label }}">{{ sending_form.address.label }}</label>
+  {{ sending_form.address }}
+  {{ sending_form.address.errors }}
+
+  <label for="{{ sending_form.amount.id_for_label }}">{{ sending_form.amount.label }}</label>
+  {{ sending_form.amount }}
+  {{ sending_form.amount.errors }}
+
+  <button type="submit">Send</button>
+</form>
+
+<h2>Recent Transactions</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Amount (BTC)</th>
+      <th>Fee</th>
+      <th>Address</th>
+      <th>Confirmations</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in transactions %}
+    <tr>
+      <td>{{ t.category|capfirst }}</td>
+      <td>{{ t.amount|stringformat:'.8f'|intcomma }}</td>
+      <td>{% if 'fee' in t %}{{ t.fee|stringformat:'.8f'|intcomma }}{% else %}N/A{% endif %}</td>
+      <td>{{ t.address }}</td>
+      <td>{{ t.confirmations }}</td>
+      <td>{{ t.datetime|naturaltime }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
